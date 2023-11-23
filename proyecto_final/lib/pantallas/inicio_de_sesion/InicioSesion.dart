@@ -11,9 +11,23 @@ class InicioSesion extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Iniciar Sesión'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: LoginForm(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Agregar una imagen antes del formulario de inicio de sesión
+            Image.network(
+              'https://w7.pngwing.com/pngs/857/213/png-transparent-man-avatar-user-business-avatar-icon.png',
+              width: 200, // Ajusta el ancho según sea necesario
+              height: 200, // Ajusta la altura según sea necesario
+              fit: BoxFit.contain, // Ajusta el tamaño de la imagen
+            ),
+            const SizedBox(
+                height: 20), // Espacio entre la imagen y el formulario
+            LoginForm(), // El formulario de inicio de sesión
+          ],
+        ),
       ),
     );
   }
