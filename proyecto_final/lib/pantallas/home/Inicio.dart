@@ -14,7 +14,7 @@ class Inicio extends StatefulWidget {
 
 class _InicioState extends State<Inicio> {
   final List<ProductItem> productList = [];
-
+  List<ProductItem> filteredProductList = [];
   @override
   void initState() {
     super.initState();
@@ -25,10 +25,10 @@ class _InicioState extends State<Inicio> {
     productList.addAll(
       [
         ProductItem(
-          productName: "Balon",
-          price: 100,
+          productName: "Funko Pop! Animación: One Piece - Roronoa Zoro",
+          price: 360,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/81ZaQfb++GL._AC_SX679_.jpg"
           ],
         ),
         ProductItem(
@@ -67,21 +67,42 @@ class _InicioState extends State<Inicio> {
           ],
         ),
         ProductItem(
-          productName: "Balon",
-          price: 100,
+          productName: "Monitor 4K",
+          price: 15000,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/71bmtncxa+L._AC_SY300_SX300_.jpg"
           ],
         ),
         ProductItem(
-          productName: "Balon",
-          price: 100,
+          productName:
+              "Echo Dot (5.ª generación, modelo de 2022) | Parlante inteligente con Alexa | Carbón",
+          price: 1000,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/518cRYanpbL._AC_SY450_.jpg"
           ],
         ),
       ],
     );
+    setState(() {
+      filteredProductList = List.from(productList);
+    });
+  }
+
+  void filterSearchResults(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredProductList = List.from(productList);
+      });
+      return;
+    }
+
+    List<ProductItem> dummyListData = productList.where((item) {
+      return item.productName.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    setState(() {
+      filteredProductList = dummyListData;
+    });
   }
 
   @override
@@ -90,22 +111,22 @@ class _InicioState extends State<Inicio> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          SearchBar(onSearch: filterSearchResults),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Text(
-              "Women",
+              "Inicio",
               style: Theme.of(context)
                   .textTheme
                   .titleLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          // Categories(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: GridView.builder(
-                itemCount: productList.length,
+                itemCount: filteredProductList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 5,
@@ -113,12 +134,12 @@ class _InicioState extends State<Inicio> {
                   childAspectRatio: 0.75,
                 ),
                 itemBuilder: (context, index) => ItemCard(
-                  product: productList[index],
+                  product: filteredProductList[index],
                   press: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailsScreen(
-                        product: productList[index],
+                        product: filteredProductList[index],
                       ),
                     ),
                   ),
@@ -127,6 +148,40 @@ class _InicioState extends State<Inicio> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatefulWidget {
+  final Function(String) onSearch;
+
+  SearchBar({required this.onSearch});
+
+  @override
+  _SearchBarState createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: searchController,
+        onChanged: widget.onSearch,
+        decoration: InputDecoration(
+          hintText: 'Buscar producto...',
+          suffixIcon: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => widget.onSearch(searchController.text),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
       ),
     );
   }
