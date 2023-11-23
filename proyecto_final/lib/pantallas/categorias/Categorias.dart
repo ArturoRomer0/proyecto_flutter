@@ -78,20 +78,7 @@ class Categorias extends StatelessWidget {
   }
 }*/
 import 'package:flutter/material.dart';
-
-// Clase para representar un producto
-class Producto {
-  final String nombre;
-  final double precio;
-  final String imagenUrl;
-  final String descripcion;
-  final String marca;
-  int cantidadEnCarrito; // Nuevo campo para contar la cantidad en el carrito
-
-  Producto(
-      this.nombre, this.precio, this.imagenUrl, this.descripcion, this.marca)
-      : cantidadEnCarrito = 0; // Inicializamos la cantidad en el carrito en 0
-}
+import 'package:proyecto_final/pantallas/categorias/Producto.dart';
 
 class Categorias extends StatelessWidget {
   final List<String> nombresCategorias = [
@@ -316,10 +303,10 @@ class Categorias extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Categorías'),
+        title: const Text('Categorías'),
       ),
       body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
@@ -366,45 +353,187 @@ class Categorias extends StatelessWidget {
   }
 }
 
-class DetallesCategoria extends StatelessWidget {
+// Detalles de categoria sin scroll infinito (No borrar por si hay errores con el scroll)
+// class DetallesCategoria extends StatelessWidget {
+//   final String categoria;
+//   final List<Producto> productos;
+
+//   DetallesCategoria({required this.categoria, required this.productos});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Productos de $categoria'),
+//       ),
+//       body: GridView.builder(
+//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//           crossAxisCount: 1, // Puedes ajustar el número de columnas aquí
+//           crossAxisSpacing: 8.0,
+//           mainAxisSpacing: 8.0,
+//         ),
+//         itemCount: productos.length,
+//         itemBuilder: (context, index) {
+//           final producto = productos[index];
+
+//           return Card(
+//             margin: EdgeInsets.all(8.0),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 // Ajusta el tamaño de la imagen según tus preferencias
+//                 Image.network(
+//                   producto.imagenUrl,
+//                   width: double.infinity, // O ajusta un ancho específico
+//                   height: 350, // Ajusta la altura según tus preferencias
+//                   fit: BoxFit.cover,
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         producto.nombre,
+//                         style: TextStyle(
+//                             fontSize: 16, fontWeight: FontWeight.bold),
+//                         maxLines: 2, // Limita el número de líneas de texto
+//                         overflow: TextOverflow.ellipsis,
+//                       ),
+//                       SizedBox(height: 4),
+//                       Text(
+//                         '\$${producto.precio.toStringAsFixed(2)}',
+//                         style: TextStyle(fontSize: 14, color: Colors.green),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//                 Center(
+//                   child: ElevatedButton(
+//                     onPressed: () {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => DetallesProducto(producto),
+//                         ),
+//                       );
+//                     },
+//                     child: Text('Ver Detalles'),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+class DetallesCategoria extends StatefulWidget {
   final String categoria;
   final List<Producto> productos;
 
   DetallesCategoria({required this.categoria, required this.productos});
 
   @override
+  _DetallesCategoriaState createState() => _DetallesCategoriaState();
+}
+
+class _DetallesCategoriaState extends State<DetallesCategoria> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+
+    // Puedes ajustar este valor para tener más duplicados y permitir un scroll más largo
+    //final int duplicateCount = 2;
+
+    widget.productos.addAll(
+        List<Producto>.from(widget.productos)..addAll(widget.productos));
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      // Llegaste al final del contenido, regresa al inicio
+      _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Productos de $categoria'),
+        title: Text('Productos de ${widget.categoria}'),
       ),
-      body: ListView.builder(
-        itemCount: productos.length,
+      body: GridView.builder(
+        controller: _scrollController,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1, // Puedes ajustar el número de columnas aquí
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+        ),
         itemBuilder: (context, index) {
-          final producto = productos[index];
+          final producto = widget.productos[index];
 
           return Card(
             margin: EdgeInsets.all(8.0),
-            child: ListTile(
-              leading: Image.network(
-                producto.imagenUrl,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
-              title: Text(producto.nombre),
-              subtitle: Text('\$${producto.precio.toStringAsFixed(2)}'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetallesProducto(producto),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  producto.imagenUrl,
+                  width: double.infinity,
+                  height: 350,
+                  fit: BoxFit.cover,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        producto.nombre,
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        '\$${producto.precio.toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 12, color: Colors.green),
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetallesProducto(producto),
+                        ),
+                      );
+                    },
+                    child: Text('Ver Detalles'),
+                  ),
+                ),
+              ],
             ),
           );
         },
+        itemCount: widget.productos.length,
       ),
     );
   }

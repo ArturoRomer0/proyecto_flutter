@@ -1,34 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/pantallas/home/Inicio.dart';
 import 'package:proyecto_final/pantallas/categorias/Categorias.dart';
-
-class CarritoCompras extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Carrito de Compras'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.shopping_cart,
-              size: 100,
-              color: Colors.blue,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Tu carrito de compras está vacío',
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+import 'package:proyecto_final/pantallas/carrito/CarritoCompras.dart';
 
 class BarraNavegacion extends StatefulWidget {
   @override
@@ -85,15 +58,15 @@ class _HomeScreenState extends State<BarraNavegacion> {
 
   void onTabTapped(int index) {
     if (index == 1) {
-    // Navega a la pantalla de categorías
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Categorias()),
-    );
-  } else {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+      // Navega a la pantalla de categorías
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Categorias()),
+      );
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 }
