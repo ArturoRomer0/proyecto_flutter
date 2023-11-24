@@ -79,6 +79,7 @@ class Categorias extends StatelessWidget {
 }*/
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/pantallas/categorias/Producto.dart';
+import 'package:proyecto_final/pantallas/carrito/carrito.dart';
 
 class Categorias extends StatelessWidget {
   final List<String> nombresCategorias = [
@@ -736,6 +737,7 @@ class DetallesProducto extends StatelessWidget {
                     if (producto.cantidadEnCarrito > 0) {
                       // Reducir la cantidad en el carrito
                       producto.cantidadEnCarrito--;
+                      (context as Element).markNeedsBuild();
                     }
                   },
                 ),
@@ -748,12 +750,14 @@ class DetallesProducto extends StatelessWidget {
                   onPressed: () {
                     // Aumentar la cantidad en el carrito
                     producto.cantidadEnCarrito++;
+                    (context as Element).markNeedsBuild();
                   },
                 ),
               ],
             ),
             ElevatedButton(
               onPressed: () {
+                cart.agregarAlCarrito(producto);
                 // Agregar el producto al carrito aquí
                 // Puedes manejar la lógica para agregarlo al carrito
                 // por ejemplo, usando un provider o una clase de carrito.

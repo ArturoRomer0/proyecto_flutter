@@ -23,3 +23,5 @@ class Carrito {
     return productos.fold(0.0, (total, producto) => total + producto.precio);
   }
 }
+
+Carrito cart = Carrito();
