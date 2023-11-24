@@ -32,38 +32,38 @@ class _InicioState extends State<Inicio> {
           ],
         ),
         ProductItem(
-          productName: "Balon",
+          productName: "FreshFun Smartwatch Reloj Inteligente",
           price: 100,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/618BsxuImoL.__AC_SX300_SY300_QL70_ML2_.jpg"
           ],
         ),
         ProductItem(
-          productName: "Balon",
+          productName: "Super Mario Odyssey - Standard Edition - Nintendo Switch",
           price: 100,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/81sS-oqpkLS._AC_SY741_.jpg"
           ],
         ),
         ProductItem(
-          productName: "Balon",
+          productName: "SanDisk 128GB microSDXC UHS-I card for Nintendo Switch",
           price: 100,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/61ysEjw8BML.__AC_SX300_SY300_QL70_ML2_.jpg"
           ],
         ),
         ProductItem(
-          productName: "Balon",
+          productName: "Reloj Casio # MTP-V001D-1B para hombre estándar",
           price: 100,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/71vkKvb05SL._AC_SY679_.jpg"
           ],
         ),
         ProductItem(
-          productName: "Balon",
+          productName: "HyperX Cloud Core 7.1. Auriculares para Gaming con Sonido Surround Virtual 7.1",
           price: 100,
           imageUrl: [
-            "https://m.media-amazon.com/images/I/51v96W+BhtS._AC_UF894,1000_QL80_FMwebp_.jpg"
+            "https://m.media-amazon.com/images/I/712CzUClvjL.__AC_SX300_SY300_QL70_ML2_.jpg"
           ],
         ),
         ProductItem(
